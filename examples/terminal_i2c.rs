@@ -18,6 +18,7 @@
 #![no_main]
 
 use core::fmt::Write;
+
 use cortex_m_rt::{entry, exception, ExceptionFrame};
 use panic_halt as _;
 use ssd1306::{prelude::*, I2CDisplayInterface, Ssd1306};
@@ -59,8 +60,8 @@ fn main() -> ! {
     );
 
     let interface = I2CDisplayInterface::new(i2c);
-    let mut display =
-        Ssd1306::new(interface, DisplaySize128x64, DisplayRotation::Rotate0).into_terminal_mode();
+    let mut display = Ssd1306::new(interface, DisplaySize128x64, DisplayRotation::Rotate0)
+        .into_terminal_mode();
     display.init().unwrap();
     let _ = display.clear();
 

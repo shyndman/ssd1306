@@ -1,7 +1,8 @@
 //! Display size.
 
-use super::command::Command;
 use display_interface::{DisplayError, WriteOnlyDataCommand};
+
+use super::command::Command;
 
 /// Workaround trait, since `Default` is only implemented to arrays up to 32 of size
 pub trait NewZeroed {

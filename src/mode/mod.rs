@@ -3,10 +3,11 @@
 mod buffered_graphics;
 mod terminal;
 
-use crate::{command::AddrMode, rotation::DisplayRotation, size::DisplaySize, Ssd1306};
 pub use buffered_graphics::*;
 use display_interface::{DisplayError, WriteOnlyDataCommand};
 pub use terminal::*;
+
+use crate::{command::AddrMode, rotation::DisplayRotation, size::DisplaySize, Ssd1306};
 
 /// Common functions to all display modes.
 pub trait DisplayConfig {

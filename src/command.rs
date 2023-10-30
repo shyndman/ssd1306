@@ -124,26 +124,37 @@ impl Command {
                 ],
             ),
             Command::EnableScroll(en) => Self::send_commands(iface, &[0x2E | (en as u8)]),
-            Command::VScrollArea(above, lines) => Self::send_commands(iface, &[0xA3, above, lines]),
+            Command::VScrollArea(above, lines) => {
+                Self::send_commands(iface, &[0xA3, above, lines])
+            }
             Command::LowerColStart(addr) => Self::send_commands(iface, &[0xF & addr]),
-            Command::UpperColStart(addr) => Self::send_commands(iface, &[0x10 | (0xF & addr)]),
+            Command::UpperColStart(addr) => {
+                Self::send_commands(iface, &[0x10 | (0xF & addr)])
+            }
             Command::ColStart(addr) => {
                 Self::send_commands(iface, &[0xF & addr, 0x10 | (0xF & (addr >> 4))])
             }
             Command::AddressMode(mode) => Self::send_commands(iface, &[0x20, mode as u8]),
-            Command::ColumnAddress(start, end) => Self::send_commands(iface, &[0x21, start, end]),
+            Command::ColumnAddress(start, end) => {
+                Self::send_commands(iface, &[0x21, start, end])
+            }
             Command::PageAddress(start, end) => {
                 Self::send_commands(iface, &[0x22, start as u8, end as u8])
             }
             Command::PageStart(page) => Self::send_commands(iface, &[0xB0 | (page as u8)]),
             Command::StartLine(line) => Self::send_commands(iface, &[0x40 | (0x3F & line)]),
-            Command::SegmentRemap(remap) => Self::send_commands(iface, &[0xA0 | (remap as u8)]),
-            Command::Multiplex(ratio) => Self::send_commands(iface, &[0xA8, ratio]),
-            Command::ReverseComDir(rev) => Self::send_commands(iface, &[0xC0 | ((rev as u8) << 3)]),
-            Command::DisplayOffset(offset) => Self::send_commands(iface, &[0xD3, offset]),
-            Command::ComPinConfig(alt, lr) => {
-                Self::send_commands(iface, &[0xDA, 0x2 | ((alt as u8) << 4) | ((lr as u8) << 5)])
+            Command::SegmentRemap(remap) => {
+                Self::send_commands(iface, &[0xA0 | (remap as u8)])
             }
+            Command::Multiplex(ratio) => Self::send_commands(iface, &[0xA8, ratio]),
+            Command::ReverseComDir(rev) => {
+                Self::send_commands(iface, &[0xC0 | ((rev as u8) << 3)])
+            }
+            Command::DisplayOffset(offset) => Self::send_commands(iface, &[0xD3, offset]),
+            Command::ComPinConfig(alt, lr) => Self::send_commands(
+                iface,
+                &[0xDA, 0x2 | ((alt as u8) << 4) | ((lr as u8) << 5)],
+            ),
             Command::DisplayClockDiv(fosc, div) => {
                 Self::send_commands(iface, &[0xD5, ((0xF & fosc) << 4) | (0xF & div)])
             }
@@ -157,9 +168,10 @@ impl Command {
             Command::ChargePump(en) => {
                 Self::send_commands(iface, &[0x8D, 0x10 | ((en as u8) << 2)])
             }
-            Command::InternalIref(en, current) => {
-                Self::send_commands(iface, &[0xAD, ((current as u8) << 5) | ((en as u8) << 4)])
-            }
+            Command::InternalIref(en, current) => Self::send_commands(
+                iface,
+                &[0xAD, ((current as u8) << 5) | ((en as u8) << 4)],
+            ),
         }
     }
 

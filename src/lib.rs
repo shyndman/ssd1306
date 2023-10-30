@@ -121,17 +121,18 @@ pub mod test_helpers;
 
 use core::convert::Infallible;
 
-pub use crate::i2c_interface::I2CDisplayInterface;
-use crate::mode::BasicMode;
 use brightness::Brightness;
 use command::{AddrMode, Command, VcomhLevel};
 use display_interface::{DataFormat::U8, DisplayError, WriteOnlyDataCommand};
 use embedded_hal::{blocking::delay::DelayMs, digital::v2::OutputPin};
-use embedded_hal_async::{delay::DelayUs};
+use embedded_hal_async::delay::DelayUs;
 use error::Error;
 use mode::{BufferedGraphicsMode, TerminalMode};
 use rotation::DisplayRotation;
 use size::DisplaySize;
+
+pub use crate::i2c_interface::I2CDisplayInterface;
+use crate::mode::BasicMode;
 
 /// SSD1306 driver.
 ///
@@ -184,7 +185,9 @@ where
     /// [embedded-graphics](https://crates.io/crates/embedded-graphics).
     ///
     /// See [BufferedGraphicsMode] for more information.
-    pub fn into_buffered_graphics_mode(self) -> Ssd1306<DI, SIZE, BufferedGraphicsMode<SIZE>> {
+    pub fn into_buffered_graphics_mode(
+        self,
+    ) -> Ssd1306<DI, SIZE, BufferedGraphicsMode<SIZE>> {
         self.into_mode(BufferedGraphicsMode::new())
     }
 
@@ -280,8 +283,12 @@ where
     /// ```
     pub fn dimensions(&self) -> (u8, u8) {
         match self.rotation {
-            DisplayRotation::Rotate0 | DisplayRotation::Rotate180 => (SIZE::WIDTH, SIZE::HEIGHT),
-            DisplayRotation::Rotate90 | DisplayRotation::Rotate270 => (SIZE::HEIGHT, SIZE::WIDTH),
+            DisplayRotation::Rotate0 | DisplayRotation::Rotate180 => {
+                (SIZE::WIDTH, SIZE::HEIGHT)
+            }
+            DisplayRotation::Rotate90 | DisplayRotation::Rotate270 => {
+                (SIZE::HEIGHT, SIZE::WIDTH)
+            }
         }
     }
 
@@ -358,7 +365,11 @@ where
     /// Set the position in the framebuffer of the display limiting where any sent data should be
     /// drawn. This method can be used for changing the affected area on the screen as well
     /// as (re-)setting the start point of the next `draw` call.
-    pub fn set_draw_area(&mut self, start: (u8, u8), end: (u8, u8)) -> Result<(), DisplayError> {
+    pub fn set_draw_area(
+        &mut self,
+        start: (u8, u8),
+        end: (u8, u8),
+    ) -> Result<(), DisplayError> {
         Command::ColumnAddress(start.0, end.0.saturating_sub(1)).send(&mut self.interface)?;
 
         if self.addr_mode != AddrMode::Page {

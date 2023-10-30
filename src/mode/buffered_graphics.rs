@@ -1,12 +1,13 @@
 //! Buffered graphics mode.
 
+use display_interface::{DisplayError, WriteOnlyDataCommand};
+
 use crate::{
     command::AddrMode,
     rotation::DisplayRotation,
     size::{DisplaySize, NewZeroed},
     Ssd1306,
 };
-use display_interface::{DisplayError, WriteOnlyDataCommand};
 
 /// Buffered graphics mode.
 ///

@@ -1,6 +1,10 @@
-use crate::{command::AddrMode, mode::DisplayConfig, rotation::DisplayRotation, size::*, Ssd1306};
 use core::{cmp::min, fmt};
+
 use display_interface::{DisplayError, WriteOnlyDataCommand};
+
+use crate::{
+    command::AddrMode, mode::DisplayConfig, rotation::DisplayRotation, size::*, Ssd1306,
+};
 
 /// Extends the [`DisplaySize`](crate::size::DisplaySize) trait
 /// to include number of characters that can fit on the display.
@@ -270,8 +274,12 @@ where
     fn reset_pos(&mut self) -> Result<(), TerminalModeError> {
         // Initialise the counter when we know it's valid
         let (w, h) = match self.rotation() {
-            DisplayRotation::Rotate0 | DisplayRotation::Rotate180 => (SIZE::WIDTH, SIZE::HEIGHT),
-            DisplayRotation::Rotate90 | DisplayRotation::Rotate270 => (SIZE::HEIGHT, SIZE::WIDTH),
+            DisplayRotation::Rotate0 | DisplayRotation::Rotate180 => {
+                (SIZE::WIDTH, SIZE::HEIGHT)
+            }
+            DisplayRotation::Rotate90 | DisplayRotation::Rotate270 => {
+                (SIZE::HEIGHT, SIZE::WIDTH)
+            }
         };
         self.mode.cursor = Some(Cursor::new(w, h));
 

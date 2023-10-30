@@ -68,7 +68,10 @@ impl WriteOnlyDataCommand for StubInterface {
     ) -> Result<(), DisplayError> {
         Ok(())
     }
-    fn send_data(&mut self, _buf: display_interface::DataFormat<'_>) -> Result<(), DisplayError> {
+    fn send_data(
+        &mut self,
+        _buf: display_interface::DataFormat<'_>,
+    ) -> Result<(), DisplayError> {
         Ok(())
     }
 }
