@@ -127,6 +127,7 @@ use brightness::Brightness;
 use command::{AddrMode, Command, VcomhLevel};
 use display_interface::{DataFormat::U8, DisplayError, WriteOnlyDataCommand};
 use embedded_hal::{blocking::delay::DelayMs, digital::v2::OutputPin};
+use embedded_hal_async::{delay::DelayUs};
 use error::Error;
 use mode::{BufferedGraphicsMode, TerminalMode};
 use rotation::DisplayRotation;

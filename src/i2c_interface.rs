@@ -1,6 +1,6 @@
 //! I2C interface factory
 
-use display_interface_i2c::I2CInterface;
+use display_interface_i2c::asynch::I2CInterface;
 
 /// Helper struct to create preconfigured I2C interfaces for the display.
 #[derive(Debug, Copy, Clone)]
