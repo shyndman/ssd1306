@@ -1,6 +1,7 @@
 //! I2C interface factory
 
-use display_interface_i2c::asynch::I2CInterface;
+use display_interface_i2c::I2CInterface;
+// use display_interface::AsyncWriteOnlyDataCommand ;
 
 /// Helper struct to create preconfigured I2C interfaces for the display.
 #[derive(Debug, Copy, Clone)]
@@ -10,7 +11,7 @@ impl I2CDisplayInterface {
     /// Create new builder with a default I2C address of 0x3C
     pub fn new<I>(i2c: I) -> I2CInterface<I>
     where
-        I: embedded_hal::blocking::i2c::Write,
+        I: embedded_hal_1::i2c::I2c,
     {
         Self::new_custom_address(i2c, 0x3C)
     }
@@ -18,7 +19,7 @@ impl I2CDisplayInterface {
     /// Create a new I2C interface with the alternate address 0x3D as specified in the datasheet.
     pub fn new_alternate_address<I>(i2c: I) -> I2CInterface<I>
     where
-        I: embedded_hal::blocking::i2c::Write,
+        I: embedded_hal_1::i2c::I2c,
     {
         Self::new_custom_address(i2c, 0x3D)
     }
@@ -26,7 +27,7 @@ impl I2CDisplayInterface {
     /// Create a new I2C interface with a custom address.
     pub fn new_custom_address<I>(i2c: I, address: u8) -> I2CInterface<I>
     where
-        I: embedded_hal::blocking::i2c::Write,
+        I: embedded_hal_1::i2c::I2c,
     {
         I2CInterface::new(i2c, address, 0x40)
     }

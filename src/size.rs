@@ -1,6 +1,6 @@
 //! Display size.
 
-use display_interface::{DisplayError, WriteOnlyDataCommand};
+use display_interface::{AsyncWriteOnlyDataCommand, DisplayError};
 
 use super::command::Command;
 
@@ -48,7 +48,10 @@ pub trait DisplaySize {
     /// See [`Command::ComPinConfig`](crate::Command::ComPinConfig)
     /// and [`Command::InternalIref`](crate::Command::InternalIref)
     /// for more information
-    fn configure(&self, iface: &mut impl WriteOnlyDataCommand) -> Result<(), DisplayError>;
+    async fn configure(
+        &self,
+        iface: &mut impl AsyncWriteOnlyDataCommand,
+    ) -> Result<(), DisplayError>;
 }
 
 /// Size information for the common 128x64 variants
@@ -59,8 +62,11 @@ impl DisplaySize for DisplaySize128x64 {
     const HEIGHT: u8 = 64;
     type Buffer = [u8; Self::WIDTH as usize * Self::HEIGHT as usize / 8];
 
-    fn configure(&self, iface: &mut impl WriteOnlyDataCommand) -> Result<(), DisplayError> {
-        Command::ComPinConfig(true, false).send(iface)
+    async fn configure(
+        &self,
+        iface: &mut impl AsyncWriteOnlyDataCommand,
+    ) -> Result<(), DisplayError> {
+        Command::ComPinConfig(true, false).send(iface).await
     }
 }
 
@@ -72,8 +78,11 @@ impl DisplaySize for DisplaySize128x32 {
     const HEIGHT: u8 = 32;
     type Buffer = [u8; Self::WIDTH as usize * Self::HEIGHT as usize / 8];
 
-    fn configure(&self, iface: &mut impl WriteOnlyDataCommand) -> Result<(), DisplayError> {
-        Command::ComPinConfig(false, false).send(iface)
+    async fn configure(
+        &self,
+        iface: &mut impl AsyncWriteOnlyDataCommand,
+    ) -> Result<(), DisplayError> {
+        Command::ComPinConfig(false, false).send(iface).await
     }
 }
 
@@ -85,8 +94,11 @@ impl DisplaySize for DisplaySize96x16 {
     const HEIGHT: u8 = 16;
     type Buffer = [u8; Self::WIDTH as usize * Self::HEIGHT as usize / 8];
 
-    fn configure(&self, iface: &mut impl WriteOnlyDataCommand) -> Result<(), DisplayError> {
-        Command::ComPinConfig(false, false).send(iface)
+    async fn configure(
+        &self,
+        iface: &mut impl AsyncWriteOnlyDataCommand,
+    ) -> Result<(), DisplayError> {
+        Command::ComPinConfig(false, false).send(iface).await
     }
 }
 
@@ -100,9 +112,12 @@ impl DisplaySize for DisplaySize72x40 {
     const OFFSETY: u8 = 0;
     type Buffer = [u8; Self::WIDTH as usize * Self::HEIGHT as usize / 8];
 
-    fn configure(&self, iface: &mut impl WriteOnlyDataCommand) -> Result<(), DisplayError> {
-        Command::ComPinConfig(true, false).send(iface)?;
-        Command::InternalIref(true, true).send(iface)
+    async fn configure(
+        &self,
+        iface: &mut impl AsyncWriteOnlyDataCommand,
+    ) -> Result<(), DisplayError> {
+        Command::ComPinConfig(true, false).send(iface).await?;
+        Command::InternalIref(true, true).send(iface).await
     }
 }
 
@@ -116,8 +131,11 @@ impl DisplaySize for DisplaySize64x48 {
     const OFFSETY: u8 = 0;
     type Buffer = [u8; Self::WIDTH as usize * Self::HEIGHT as usize / 8];
 
-    fn configure(&self, iface: &mut impl WriteOnlyDataCommand) -> Result<(), DisplayError> {
-        Command::ComPinConfig(true, false).send(iface)
+    async fn configure(
+        &self,
+        iface: &mut impl AsyncWriteOnlyDataCommand,
+    ) -> Result<(), DisplayError> {
+        Command::ComPinConfig(true, false).send(iface).await
     }
 }
 
@@ -131,7 +149,10 @@ impl DisplaySize for DisplaySize64x32 {
     const OFFSETY: u8 = 0;
     type Buffer = [u8; Self::WIDTH as usize * Self::HEIGHT as usize / 8];
 
-    fn configure(&self, iface: &mut impl WriteOnlyDataCommand) -> Result<(), DisplayError> {
-        Command::ComPinConfig(true, false).send(iface)
+    async fn configure(
+        &self,
+        iface: &mut impl AsyncWriteOnlyDataCommand,
+    ) -> Result<(), DisplayError> {
+        Command::ComPinConfig(true, false).send(iface).await
     }
 }
